@@ -1,0 +1,1299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://zelsoft.ru/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://zelsoft.ru/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service helps to implement the data exchange mechanism between InTour Office and external travel systems.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://zelsoft.ru/">
+      <s:element name="AvailableConfirmationsRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AvailableConfirmationsRequest" type="tns:AvailableConfirmationsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AvailableConfirmationsRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Request">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Requestor" type="tns:User" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="User">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            </s:sequence>
+            <s:attribute name="Login" type="s:string" />
+            <s:attribute name="Password" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Record" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+        </s:sequence>
+        <s:attribute default="0" name="InternalID" type="s:int" />
+        <s:attribute name="Created" type="s:dateTime" />
+        <s:attribute default="0" name="ID" type="s:int" />
+      </s:complexType>
+      <s:complexType name="HotelRoom">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Accommodation" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Category" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Type" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute default="" name="Name" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Reference">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Parent" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute name="Code" type="s:string" />
+            <s:attribute name="Name" type="s:string" />
+            <s:attribute default="Unknown" name="Type" type="tns:ReferenceType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="ReferenceType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="All" />
+          <s:enumeration value="AirAliance" />
+          <s:enumeration value="AirCompany" />
+          <s:enumeration value="Aircraft" />
+          <s:enumeration value="AirflightClass" />
+          <s:enumeration value="Airport" />
+          <s:enumeration value="BookingState" />
+          <s:enumeration value="City" />
+          <s:enumeration value="Company" />
+          <s:enumeration value="Country" />
+          <s:enumeration value="Currency" />
+          <s:enumeration value="Discount" />
+          <s:enumeration value="District" />
+          <s:enumeration value="Hotel" />
+          <s:enumeration value="HotelCategory" />
+          <s:enumeration value="HotelChain" />
+          <s:enumeration value="HotelFacility" />
+          <s:enumeration value="HotelType" />
+          <s:enumeration value="MealType" />
+          <s:enumeration value="Partner" />
+          <s:enumeration value="PersonPreference" />
+          <s:enumeration value="PersonSalutation" />
+          <s:enumeration value="Region" />
+          <s:enumeration value="RoomCategory" />
+          <s:enumeration value="RoomType" />
+          <s:enumeration value="ServiceType" />
+          <s:enumeration value="TourType" />
+          <s:enumeration value="User" />
+          <s:enumeration value="UserGroup" />
+          <s:enumeration value="Vehicle" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Hotel">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Reference">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AllotmentComments" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Category" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="CommitmentComments" type="s:string" />
+            </s:sequence>
+            <s:attribute name="Email" type="s:string" />
+            <s:attribute name="Phone" type="s:string" />
+            <s:attribute name="Fax" type="s:string" />
+            <s:attribute name="HomePage" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Service">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Duration" type="tns:DurationPeriod" />
+            </s:sequence>
+            <s:attribute name="Amount" type="s:decimal" />
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute default="" name="Name" type="s:string" />
+            <s:attribute default="0" name="PersonQuantity" type="s:short" />
+            <s:attribute default="Not Defined" name="State" type="tns:ReservationState" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DurationPeriod">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DateTimeSpan">
+            <s:attribute name="Week" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DateTimeSpan">
+        <s:attribute name="Begin" type="s:dateTime" />
+        <s:attribute name="End" type="s:dateTime" />
+      </s:complexType>
+      <s:simpleType name="ReservationState">
+        <s:restriction base="s:string">
+          <s:enumeration value="Not Defined" />
+          <s:enumeration value="Waiting Confirmation" />
+          <s:enumeration value="Wait List" />
+          <s:enumeration value="Cancelled" />
+          <s:enumeration value="Not Confirmed" />
+          <s:enumeration value="Confirmed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Transfer">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Service">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Flight" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Vehicle" type="tns:Reference" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HotelExtraService">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Service">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="City" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Hotel" type="tns:Hotel" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HotelAccommodation">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Service">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="City" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Hotel" type="tns:Hotel" />
+              <s:element minOccurs="0" maxOccurs="1" name="MealType" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Room" type="tns:HotelRoom" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Excursion">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Service">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Vehicle" type="tns:Reference" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ExtraService">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Service" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Person">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Birthday" type="s:date" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+            </s:sequence>
+            <s:attribute default="0" name="AgeType" type="tns:PersonAgeType" />
+            <s:attribute default="0" name="Gender" type="tns:PersonGender" />
+            <s:attribute name="Main" type="s:short" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="PersonAgeType">
+        <s:restriction base="s:string">
+          <s:enumeration value="0" />
+          <s:enumeration value="1" />
+          <s:enumeration value="2" />
+          <s:enumeration value="3" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PersonGender">
+        <s:restriction base="s:string">
+          <s:enumeration value="0" />
+          <s:enumeration value="1" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Invoice">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking" />
+            </s:sequence>
+            <s:attribute name="Amount" type="s:decimal" />
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute name="Date" type="s:date" />
+            <s:attribute name="Currency" type="s:string" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfBooking">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Booking" type="tns:Booking" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Booking">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Duration" type="tns:DurationPeriod" />
+              <s:element minOccurs="0" maxOccurs="1" name="Invoices" type="tns:ArrayOfInvoice" />
+              <s:element minOccurs="0" maxOccurs="1" name="Owner" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="Persons" type="tns:ArrayOfPerson" />
+              <s:element minOccurs="0" maxOccurs="1" name="PersonServices" type="tns:ArrayOfPersonService" />
+              <s:element minOccurs="0" maxOccurs="1" name="Services" type="tns:ArrayOfChoice1" />
+            </s:sequence>
+            <s:attribute name="Amount" type="s:decimal" />
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute default="Not Defined" name="OperationalState" type="tns:OperationalState" />
+            <s:attribute default="Not Defined" name="State" type="tns:ReservationState" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Invoice" nillable="true" type="tns:Invoice" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPerson">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Person" type="tns:Person" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPersonService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PersonService" type="tns:PersonService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PersonService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Person" type="tns:Person" />
+          <s:element minOccurs="0" maxOccurs="1" name="Service" type="tns:Service" />
+        </s:sequence>
+        <s:attribute name="RoomNumber" type="s:short" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfChoice1">
+        <s:choice minOccurs="0" maxOccurs="unbounded">
+          <s:element minOccurs="1" maxOccurs="1" name="HotelAccommodation" nillable="true" type="tns:HotelAccommodation" />
+          <s:element minOccurs="1" maxOccurs="1" name="HotelExtraService" nillable="true" type="tns:HotelExtraService" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExtraService" nillable="true" type="tns:ExtraService" />
+          <s:element minOccurs="1" maxOccurs="1" name="Service" nillable="true" type="tns:Service" />
+          <s:element minOccurs="1" maxOccurs="1" name="Excursion" nillable="true" type="tns:Excursion" />
+          <s:element minOccurs="1" maxOccurs="1" name="Transfer" nillable="true" type="tns:Transfer" />
+        </s:choice>
+      </s:complexType>
+      <s:simpleType name="OperationalState">
+        <s:restriction base="s:string">
+          <s:enumeration value="Not Found" />
+          <s:enumeration value="Rejected" />
+          <s:enumeration value="Not Defined" />
+          <s:enumeration value="Accepted" />
+          <s:enumeration value="Transferring" />
+          <s:enumeration value="Transferred" />
+          <s:enumeration value="Processing" />
+          <s:enumeration value="Processed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AvailableConfirmationsRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AvailableConfirmationsResponse" type="tns:AvailableConfirmationsResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AvailableConfirmationsResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Response">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Errors" type="tns:ArrayOfWarning" />
+          <s:element minOccurs="0" maxOccurs="1" name="Warnings" type="tns:ArrayOfWarning1" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfWarning">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Error" type="tns:Warning" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Warning">
+        <s:simpleContent>
+          <s:extension base="s:string">
+            <s:attribute name="Code" type="s:short" use="required" />
+          </s:extension>
+        </s:simpleContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfWarning1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Warning" type="tns:Warning" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CancellationRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancellationRequest" type="tns:CancellationRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CancellationRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CancellationRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancellationResponse" type="tns:CancellationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CancellationResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CountriesRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CountriesRequest" type="tns:CountriesRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CountriesRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CountriesRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CountriesResponse" type="tns:CountriesResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CountriesResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfReference" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfReference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Country" type="tns:Reference" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="HotelPricesRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HotelPricesRequest" type="tns:HotelPricesRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HotelPricesRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfHotelPriceCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfHotelPriceCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" nillable="true" type="tns:HotelPriceCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HotelPriceCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnitCondition">
+            <s:attribute default="0" name="PartnerID" type="s:int" />
+            <s:attribute default="All" name="PriceType" type="tns:HotelPriceType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HotelUnitCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Condition">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="City" type="tns:ReferenceCondition" />
+              <s:element minOccurs="0" maxOccurs="1" name="Hotel" type="tns:ReferenceCondition" />
+              <s:element minOccurs="0" maxOccurs="1" name="Period" type="tns:DurationPeriod" />
+            </s:sequence>
+            <s:attribute name="CityID" type="s:int" use="required" />
+            <s:attribute name="CountryID" type="s:int" use="required" />
+            <s:attribute name="HotelID" type="s:int" use="required" />
+            <s:attribute name="AccommodationID" type="s:int" use="required" />
+            <s:attribute name="RoomCategoryID" type="s:int" use="required" />
+            <s:attribute name="RoomTypeID" type="s:int" use="required" />
+            <s:attribute default="Quota" name="Type" type="tns:HotelUnitType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Condition" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Created" type="tns:DurationPeriod" />
+        </s:sequence>
+        <s:attribute default="0" name="InternalID" type="s:int" />
+        <s:attribute default="0" name="ID" type="s:int" />
+      </s:complexType>
+      <s:complexType name="ReferenceCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Condition">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Parent" type="tns:ReferenceCondition" />
+            </s:sequence>
+            <s:attribute name="Code" type="s:string" />
+            <s:attribute name="Name" type="s:string" />
+            <s:attribute default="All" name="Type" type="tns:ReferenceType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="HotelUnitType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Hot Offer" />
+          <s:enumeration value="Quota" />
+          <s:enumeration value="Price" />
+          <s:enumeration value="Release Period" />
+          <s:enumeration value="Stop Sale" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="HotelPriceType">
+        <s:restriction base="s:string">
+          <s:enumeration value="All" />
+          <s:enumeration value="Per Person" />
+          <s:enumeration value="Per Room" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="HotelPricesRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HotelPricesResponse" type="tns:HotelPricesResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HotelPricesResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Prices" type="tns:ArrayOfHotelPrice" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfHotelPrice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Price" type="tns:HotelPrice" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HotelPrice">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnit">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="BookingPeriod" type="tns:DurationPeriod" />
+              <s:element minOccurs="0" maxOccurs="1" name="SpecialOffer" type="tns:SpecialOffer" />
+              <s:element minOccurs="0" maxOccurs="1" name="City" type="tns:Reference" />
+              <s:element minOccurs="0" maxOccurs="1" name="MealType" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute name="Amount" type="s:decimal" use="required" />
+            <s:attribute name="Currency" type="s:string" />
+            <s:attribute default="0" name="MinimumStay" type="s:short" />
+            <s:attribute default="0" name="MaximumStay" type="s:short" />
+            <s:attribute default="All" name="Type" type="tns:HotelPriceType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HotelUnit" abstract="true">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Hotel" type="tns:Hotel" />
+              <s:element minOccurs="0" maxOccurs="1" name="Period" type="tns:DurationPeriod" />
+              <s:element minOccurs="0" maxOccurs="1" name="Room" type="tns:HotelRoom" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SpecialOffer">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="SpecialOfferType" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute name="Code" type="s:string" />
+            <s:attribute name="Name" type="s:string" />
+            <s:attribute default="0" name="X" type="s:short" />
+            <s:attribute default="0" name="Y" type="s:short" />
+            <s:attribute default="0" name="FreeNights" type="s:short" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="HotelRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HotelRequest" type="tns:HotelRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HotelRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfHotelCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfHotelCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" nillable="true" type="tns:HotelCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HotelCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ReferenceCondition" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="HotelRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HotelResponse" type="tns:HotelResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HotelResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Hotels" type="tns:ArrayOfHotel" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfHotel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Hotel" nillable="true" type="tns:Hotel" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="IncomingMessagesRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncomingMessagesRequest" type="tns:IncomingMessagesRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="IncomingMessagesRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="IncomingMessagesRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IncomingMessagesResponse" type="tns:IncomingMessagesResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="IncomingMessagesResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Messages" type="tns:ArrayOfBookingMessage" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfBookingMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Message" type="tns:BookingMessage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BookingMessage" mixed="true">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Booking" type="tns:Booking" />
+            </s:sequence>
+            <s:attribute name="Sent" type="s:dateTime" use="required" />
+            <s:attribute default="Not Defined" name="TransactionState" type="tns:OperationalState" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InvoicesRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InvoicesRequest" type="tns:InvoicesRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InvoicesRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfInvoiceCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoiceCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" nillable="true" type="tns:InvoiceCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InvoiceCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Condition">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Duration" type="tns:DurationPeriod" />
+            </s:sequence>
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute default="0" name="OwnerID" type="s:int" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InvoicesRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InvoicesResponse" type="tns:InvoicesResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InvoicesResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfInvoice" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="OutgoingMessagesRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OutgoingMessagesRequest" type="tns:OutgoingMessagesRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OutgoingMessagesRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Messages" type="tns:ArrayOfBookingMessage" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="OutgoingMessagesRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OutgoingMessagesResponse" type="tns:OutgoingMessagesResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OutgoingMessagesResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Messages" type="tns:ArrayOfBookingMessage" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="QuotasRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuotasRequest" type="tns:QuotasRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuotasRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfQuotaCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfQuotaCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" type="tns:QuotaCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuotaCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnitCondition">
+            <s:attribute default="0" name="OwnerID" type="s:int" />
+            <s:attribute default="All" name="QuotaKind" type="tns:QuotaKind" />
+            <s:attribute default="All" name="QuotaState" type="tns:QuotaState" />
+            <s:attribute default="All" name="QuotaType" type="tns:QuotaType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="QuotaKind">
+        <s:restriction base="s:string">
+          <s:enumeration value="All" />
+          <s:enumeration value="Per CheckIn" />
+          <s:enumeration value="Per Night" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="QuotaState">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="All" />
+              <s:enumeration value="Valid Only" />
+              <s:enumeration value="On Request" />
+              <s:enumeration value="No Places" />
+              <s:enumeration value="Stop Sale" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:simpleType name="QuotaType">
+        <s:restriction base="s:string">
+          <s:enumeration value="All" />
+          <s:enumeration value="Allotment" />
+          <s:enumeration value="Commitment" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="QuotasRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuotasResponse" type="tns:QuotasResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuotasResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfChoice2" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfChoice2">
+        <s:choice minOccurs="0" maxOccurs="unbounded">
+          <s:element minOccurs="1" maxOccurs="1" name="ReleasePeriod" nillable="true" type="tns:ReleasePeriod" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quota" nillable="true" type="tns:Quota" />
+          <s:element minOccurs="1" maxOccurs="1" name="HotOffer" nillable="true" type="tns:HotOffer" />
+          <s:element minOccurs="1" maxOccurs="1" name="StopSale" nillable="true" type="tns:StopSale" />
+        </s:choice>
+      </s:complexType>
+      <s:complexType name="ReleasePeriod">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnit">
+            <s:attribute name="Quantity" type="s:short" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Quota">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnit">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfQuotaItem" />
+              <s:element minOccurs="0" maxOccurs="1" name="Provider" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute default="Per Night" name="Kind" type="tns:QuotaKind" />
+            <s:attribute default="All" name="Type" type="tns:QuotaType" />
+            <s:attribute default="0" name="Quantity" type="s:short" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfQuotaItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Item" nillable="true" type="tns:QuotaItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuotaItem">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Record">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Owner" type="tns:Reference" />
+            </s:sequence>
+            <s:attribute name="Busy" type="s:short" use="required" />
+            <s:attribute name="Date" type="s:date" use="required" />
+            <s:attribute name="Quantity" type="s:short" use="required" />
+            <s:attribute name="ReleasePeriod" type="s:short" use="required" />
+            <s:attribute name="UnderStopSale" type="s:short" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HotOffer">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnit">
+            <s:attribute name="Quantity" type="s:short" use="required" />
+            <s:attribute default="All" name="Type" type="tns:QuotaType" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="StopSale">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:HotelUnit" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ReferenceRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReferenceRequest" type="tns:ReferenceRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReferenceRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfReferenceCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfReferenceCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" nillable="true" type="tns:ReferenceCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ReferenceRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReferenceResponse" type="tns:ReferenceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReferenceResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="References" type="tns:ArrayOfReference1" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfReference1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Reference" nillable="true" type="tns:Reference" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ReservationRQ">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReservationRequest" type="tns:ReservationRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReservationRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking1" />
+              <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="tns:ArrayOfBookingCondition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfBooking1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Booking" nillable="true" type="tns:Booking" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBookingCondition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Condition" nillable="true" type="tns:BookingCondition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BookingCondition">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Condition">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Duration" type="tns:DurationPeriod" />
+            </s:sequence>
+            <s:attribute default="" name="Code" type="s:string" />
+            <s:attribute default="Not Defined" name="OperationalState" type="tns:OperationalState" />
+            <s:attribute default="0" name="OwnerID" type="s:int" />
+            <s:attribute default="Not Defined" name="State" type="tns:ReservationState" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ReservationRQResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReservationResponse" type="tns:ReservationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReservationResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bookings" type="tns:ArrayOfBooking1" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AvailableConfirmationsRQSoapIn">
+    <wsdl:part name="parameters" element="tns:AvailableConfirmationsRQ" />
+  </wsdl:message>
+  <wsdl:message name="AvailableConfirmationsRQSoapOut">
+    <wsdl:part name="parameters" element="tns:AvailableConfirmationsRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancellationRQSoapIn">
+    <wsdl:part name="parameters" element="tns:CancellationRQ" />
+  </wsdl:message>
+  <wsdl:message name="CancellationRQSoapOut">
+    <wsdl:part name="parameters" element="tns:CancellationRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="CountriesRQSoapIn">
+    <wsdl:part name="parameters" element="tns:CountriesRQ" />
+  </wsdl:message>
+  <wsdl:message name="CountriesRQSoapOut">
+    <wsdl:part name="parameters" element="tns:CountriesRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="HotelPricesRQSoapIn">
+    <wsdl:part name="parameters" element="tns:HotelPricesRQ" />
+  </wsdl:message>
+  <wsdl:message name="HotelPricesRQSoapOut">
+    <wsdl:part name="parameters" element="tns:HotelPricesRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="HotelRQSoapIn">
+    <wsdl:part name="parameters" element="tns:HotelRQ" />
+  </wsdl:message>
+  <wsdl:message name="HotelRQSoapOut">
+    <wsdl:part name="parameters" element="tns:HotelRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="IncomingMessagesRQSoapIn">
+    <wsdl:part name="parameters" element="tns:IncomingMessagesRQ" />
+  </wsdl:message>
+  <wsdl:message name="IncomingMessagesRQSoapOut">
+    <wsdl:part name="parameters" element="tns:IncomingMessagesRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="InvoicesRQSoapIn">
+    <wsdl:part name="parameters" element="tns:InvoicesRQ" />
+  </wsdl:message>
+  <wsdl:message name="InvoicesRQSoapOut">
+    <wsdl:part name="parameters" element="tns:InvoicesRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="OutgoingMessagesRQSoapIn">
+    <wsdl:part name="parameters" element="tns:OutgoingMessagesRQ" />
+  </wsdl:message>
+  <wsdl:message name="OutgoingMessagesRQSoapOut">
+    <wsdl:part name="parameters" element="tns:OutgoingMessagesRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="QuotasRQSoapIn">
+    <wsdl:part name="parameters" element="tns:QuotasRQ" />
+  </wsdl:message>
+  <wsdl:message name="QuotasRQSoapOut">
+    <wsdl:part name="parameters" element="tns:QuotasRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReferenceRQSoapIn">
+    <wsdl:part name="parameters" element="tns:ReferenceRQ" />
+  </wsdl:message>
+  <wsdl:message name="ReferenceRQSoapOut">
+    <wsdl:part name="parameters" element="tns:ReferenceRQResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReservationRQSoapIn">
+    <wsdl:part name="parameters" element="tns:ReservationRQ" />
+  </wsdl:message>
+  <wsdl:message name="ReservationRQSoapOut">
+    <wsdl:part name="parameters" element="tns:ReservationRQResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ExchangeServiceSoap">
+    <wsdl:operation name="AvailableConfirmationsRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get new bookings or services confirmation from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:AvailableConfirmationsRQSoapIn" />
+      <wsdl:output message="tns:AvailableConfirmationsRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancellationRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to transfer the information about new cancellations to InTour Office.</wsdl:documentation>
+      <wsdl:input message="tns:CancellationRQSoapIn" />
+      <wsdl:output message="tns:CancellationRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CountriesRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get a list of countries from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:CountriesRQSoapIn" />
+      <wsdl:output message="tns:CountriesRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HotelPricesRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get new hotel accommodation prices from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:HotelPricesRQSoapIn" />
+      <wsdl:output message="tns:HotelPricesRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HotelRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get a hotel data from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:HotelRQSoapIn" />
+      <wsdl:output message="tns:HotelRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IncomingMessagesRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to transfer the new reservation-based messages from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:IncomingMessagesRQSoapIn" />
+      <wsdl:output message="tns:IncomingMessagesRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InvoicesRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get new invoices from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:InvoicesRQSoapIn" />
+      <wsdl:output message="tns:InvoicesRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="OutgoingMessagesRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to transfer the new reservation-based messages from external travel system to InTour Office.</wsdl:documentation>
+      <wsdl:input message="tns:OutgoingMessagesRQSoapIn" />
+      <wsdl:output message="tns:OutgoingMessagesRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QuotasRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get an information about new hot offers, quotas, release periods or stop sales from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:QuotasRQSoapIn" />
+      <wsdl:output message="tns:QuotasRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReferenceRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The purpose of this request is to get a reference data from InTour Office to external travel system.</wsdl:documentation>
+      <wsdl:input message="tns:ReferenceRQSoapIn" />
+      <wsdl:output message="tns:ReferenceRQSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReservationRQ">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+You can use this request for sending the information about new or changed reservations from external travel system to InTour Office.
+Or you can get the information about an operational state of your bookings inside InTour Office.</wsdl:documentation>
+      <wsdl:input message="tns:ReservationRQSoapIn" />
+      <wsdl:output message="tns:ReservationRQSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ExchangeServiceSoap" type="tns:ExchangeServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AvailableConfirmationsRQ">
+      <soap:operation soapAction="http://zelsoft.ru/AvailableConfirmationsRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancellationRQ">
+      <soap:operation soapAction="http://zelsoft.ru/CancellationRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CountriesRQ">
+      <soap:operation soapAction="http://zelsoft.ru/CountriesRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelPricesRQ">
+      <soap:operation soapAction="http://zelsoft.ru/HotelPricesRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelRQ">
+      <soap:operation soapAction="http://zelsoft.ru/HotelRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncomingMessagesRQ">
+      <soap:operation soapAction="http://zelsoft.ru/IncomingMessagesRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvoicesRQ">
+      <soap:operation soapAction="http://zelsoft.ru/InvoicesRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OutgoingMessagesRQ">
+      <soap:operation soapAction="http://zelsoft.ru/OutgoingMessagesRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuotasRQ">
+      <soap:operation soapAction="http://zelsoft.ru/QuotasRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReferenceRQ">
+      <soap:operation soapAction="http://zelsoft.ru/ReferenceRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReservationRQ">
+      <soap:operation soapAction="http://zelsoft.ru/ReservationRQ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExchangeServiceSoap12" type="tns:ExchangeServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AvailableConfirmationsRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/AvailableConfirmationsRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancellationRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/CancellationRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CountriesRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/CountriesRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelPricesRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/HotelPricesRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/HotelRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IncomingMessagesRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/IncomingMessagesRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvoicesRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/InvoicesRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OutgoingMessagesRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/OutgoingMessagesRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuotasRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/QuotasRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReferenceRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/ReferenceRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReservationRQ">
+      <soap12:operation soapAction="http://zelsoft.ru/ReservationRQ" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ExchangeService">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service helps to implement the data exchange mechanism between InTour Office and external travel systems.</wsdl:documentation>
+    <wsdl:port name="ExchangeServiceSoap" binding="tns:ExchangeServiceSoap">
+      <soap:address location="http://alkhalidiah.dyndns.org:7878/InTour%20XML/ExchangeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExchangeServiceSoap12" binding="tns:ExchangeServiceSoap12">
+      <soap12:address location="http://alkhalidiah.dyndns.org:7878/InTour%20XML/ExchangeService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
